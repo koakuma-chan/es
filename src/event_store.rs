@@ -1,4 +1,10 @@
-pub trait EventStore<E> {
+use crate::Apply;
+
+pub trait EventStore<A, E>
+where
+    //
+    A: Apply<Event = E>,
+{
     type Error;
 
     fn append(

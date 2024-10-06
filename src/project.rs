@@ -14,11 +14,11 @@ pub trait Project<A> {
 impl<T, A, E> Project<A> for T
 where
     //
-    T: EventStore<E>,
+    T: EventStore<A, E>,
     //
     A: Apply<Event = E> + Default,
 {
-    type Error = <T as EventStore<E>>::Error;
+    type Error = <T as EventStore<A, E>>::Error;
 
     fn project(
         //

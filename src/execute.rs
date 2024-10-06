@@ -20,7 +20,7 @@ where
 impl<T, A, E> Execute<A> for T
 where
     //
-    T: EventStore<E> + Project<A>,
+    T: EventStore<A, E> + Project<A>,
     //
     A: Apply<Event = E> + Handle<Event = E>,
 {
@@ -30,7 +30,7 @@ where
         //
         <T as Project<A>>::Error,
         //
-        <T as EventStore<E>>::Error,
+        <T as EventStore<A, E>>::Error,
     >;
 
     fn execute(

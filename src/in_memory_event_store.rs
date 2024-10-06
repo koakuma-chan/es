@@ -1,23 +1,37 @@
-use crate::EventStore;
+use crate::{Apply, EventStore};
 
-use std::convert::Infallible;
+use std::{convert::Infallible, marker::PhantomData};
 
 use nohash_hasher::IntMap;
 
-pub struct InMemoryEventStore<E> {
+pub struct InMemoryEventStore<A, E>
+where
+    //
+    A: Apply<Event = E>,
+{
     streams: IntMap<u64, Vec<E>>,
+
+    _phantom_data: PhantomData<A>,
 }
 
-impl<E> Default for InMemoryEventStore<E> {
+impl<A, E> Default for InMemoryEventStore<A, E>
+where
+    //
+    A: Apply<Event = E>,
+{
     fn default() -> Self {
         Self {
             streams: Default::default(),
+
+            _phantom_data: PhantomData::default(),
         }
     }
 }
 
-impl<E> EventStore<E> for InMemoryEventStore<E>
+impl<A, E> EventStore<A, E> for InMemoryEventStore<A, E>
 where
+    //
+    A: Apply<Event = E>,
     //
     E: Clone,
 {

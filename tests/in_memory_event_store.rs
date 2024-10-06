@@ -50,7 +50,7 @@ fn it_works() -> Result<(), Error> {
 
     let command = Command::DepositMoney { amount: 69 };
 
-    <InMemoryEventStore<Event> as Execute<Account>>::execute(&mut event_store, 0, &command)?;
+    event_store.execute(0, &command)?;
 
     let Account { balance } = event_store.project(0)?;
 
