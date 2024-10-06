@@ -1,5 +1,7 @@
 use std::convert::Infallible;
 
+use anyhow::Error;
+
 use es::*;
 
 #[derive(Default)]
@@ -43,16 +45,16 @@ impl Apply for Account {
 }
 
 #[test]
-fn it_works() {
+fn it_works() -> Result<(), Error> {
     let mut event_store = InMemoryEventStore::default();
 
     let command = Command::DepositMoney { amount: 69 };
 
-    <InMemoryEventStore<Event> as Execute<Account>>::execute(&mut event_store, 0, &command)
-        //
-        .unwrap();
+    <InMemoryEventStore<Event> as Execute<Account>>::execute(&mut event_store, 0, &command)?;
 
-    let Account { balance } = event_store.project(0).unwrap();
+    let Account { balance } = event_store.project(0)?;
 
     assert_eq!(balance, 69);
+
+    Ok(())
 }
