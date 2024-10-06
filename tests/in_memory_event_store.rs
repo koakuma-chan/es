@@ -48,9 +48,7 @@ impl Apply for Account {
 fn it_works() -> Result<(), Error> {
     let mut event_store = InMemoryEventStore::default();
 
-    let command = Command::DepositMoney { amount: 69 };
-
-    event_store.execute(0, &command)?;
+    event_store.execute(0, &Command::DepositMoney { amount: 69 })?;
 
     let Account { balance } = event_store.project(0)?;
 
